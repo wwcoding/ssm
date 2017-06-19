@@ -18,4 +18,9 @@
     <select id="selectUserById" parameterType="int" resultMap="BaseResultMap">  
         SELECT * FROM sys_user WHERE USER_ID = #{userId}  
     </select>
+    
+    <!-- 查询单条记录 -->  
+    <select id="selectUserByUsername" parameterType="String" resultMap="BaseResultMap">  
+        SELECT * FROM sys_user WHERE USER_NAME = #{userName}
+    </select>
 </mapper>

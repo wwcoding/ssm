@@ -16,5 +16,9 @@ public class UserServiceImpl implements UserService {
 	public User selectUserById(Integer id) throws Exception {
 		return userDao.selectUserById(id);
 	}
+	@Override
+	public User selectUserByUsername(String username) throws Exception {
+		return userDao.selectUserByUsername(username);
+	}
 
 }
