@@ -9,6 +9,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import com.coder.domain.User;
 import com.coder.realm.ShiroDbRealm;
 import com.coder.service.UserService;
 import com.coder.util.CipherUtil;
+import com.octo.captcha.service.image.ImageCaptchaService;
 
 @Controller
 public class UserController {
@@ -27,6 +29,9 @@ public class UserController {
 	
 	@Resource
 	private UserService userService;
+	
+	@Autowired  
+    private ImageCaptchaService imageCaptchaService; 
 	
 	@RequestMapping("/hello")
 	public ModelAndView getIndex() throws Exception{
@@ -44,11 +49,6 @@ public class UserController {
     @RequestMapping("/login")  
     public String tologin(HttpServletRequest request, HttpServletResponse response, Model model){  
         logger.debug("来自IP[" + request.getRemoteHost() + "]的访问");  
-        String url = request.getRequestURL().toString();
-    	url = url.substring(0, url.indexOf('/', url.indexOf("//") + 2));
-    	String context = request.getContextPath();
-    	url += context;
-        System.out.println(url);
         return "login";  
     }
     
@@ -58,11 +58,14 @@ public class UserController {
      * @return 
      */  
     @RequestMapping("/checkLogin")  
-    public String login(HttpServletRequest request) {  
-    	String url = request.getRequestURL().toString();
-    	System.out.println(url);
-    	
+    public String login(HttpServletRequest request,String captcha) {  
         String result = "login";
+        //验证码
+        System.out.println("captchaing...");
+        Boolean isResponseCorrect = imageCaptchaService.validateResponseForID(request.getSession().getId(), captcha);
+        if (!isResponseCorrect) {
+			return result;
+		}
         // 取得用户名  
         String username = request.getParameter("username");  
         //取得 密码，并用MD5加密  
@@ -77,8 +80,8 @@ public class UserController {
                 token.setRememberMe(true);  
                 currentUser.login(token);//验证角色和权限  
             }  
-            System.out.println("result: " + result);  
-            result = "index";//验证成功  
+            System.out.println("result: " + result);
+            result = "login";//验证失败  
         } catch (Exception e) {  
             logger.error(e.getMessage());  
             result = "login";//验证失败  

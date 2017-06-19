@@ -30,7 +30,7 @@
                 /checkLogin = anon
                 /login = anon
                 /logout.html = anon
-                /** = authc
+                /** = anon
             </value>  
         </property>  
     </bean>

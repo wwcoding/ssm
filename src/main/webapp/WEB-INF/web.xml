@@ -11,8 +11,12 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     </welcome-file-list>
     <!-- 读取spring配置文件 -->  
     <context-param>  
-        <param-name>contextConfigLocation</param-name>  
-        <param-value>classpath:application.xml,classpath:shiro/spring-shiro.xml</param-value>  
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+        	classpath:application.xml
+			classpath:shiro/spring-shiro.xml
+			classpath:application-captcha.xml
+		</param-value>
     </context-param>  
     <!-- 设计路径变量值 -->  
     <context-param>  

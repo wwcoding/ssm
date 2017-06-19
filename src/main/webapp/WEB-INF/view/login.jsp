@@ -9,8 +9,10 @@
 <body>
 
 	<form action="${ctx}/ssm/checkLogin" method="post">  
-        username: <input type="text" name="username"><br>  
-        password: <input type="password" name="password"><br>  
+        username: <input type="text" name="username"><br>
+        password: <input type="password" name="password"><br>
+        <input type="text" id="captcha" name="captcha" maxlength="4" />
+		<img src="captcha" onclick="this.src='captcha?d='+new Date().getTime()"/><br>
         <input type="submit" value="登录">  
     </form>
     
