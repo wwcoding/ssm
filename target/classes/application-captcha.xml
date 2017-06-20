@@ -5,12 +5,16 @@
     default-lazy-init="true">  
   
     <bean id="captchaService" class="com.octo.captcha.service.multitype.GenericManageableCaptchaService">  
-        <constructor-arg index="0" ref="imageEngine" />  
-        <constructor-arg type="int" index="1" value="180" />  
+    	<description>验证码服务</description>
+        <constructor-arg index="0" ref="imageEngine" />
+        <!--超时时间 秒-->
+        <constructor-arg type="int" index="1" value="600" />
+        <!--最大并发数-->
         <constructor-arg type="int" index="2" value="100000" />  
     </bean>  
   
     <bean id="imageEngine" class="com.octo.captcha.engine.GenericCaptchaEngine">  
+    	<description>图片引擎</description>
         <constructor-arg index="0">  
             <list>  
                 <ref bean="captchaFactory" />  
@@ -19,7 +23,8 @@
     </bean>  
   
     <bean id="captchaFactory" class="com.octo.captcha.image.gimpy.GimpyFactory">  
-        <constructor-arg>  
+    	<description>验证码工厂</description>
+        <constructor-arg>
             <ref bean="wordgen" />  
         </constructor-arg>  
         <constructor-arg>  
@@ -29,14 +34,15 @@
   
     <bean id="wordgen" class="com.octo.captcha.component.word.wordgenerator.RandomWordGenerator">  
         <!--可选字符-->  
-        <constructor-arg>  
+        <constructor-arg index="0">  
             <value>  
-                0123456789abcdefghijklmnopqrstuvwxyz  
+                0123456789abcdefghijklmnopqrstuvwxyz
             </value>  
         </constructor-arg>  
     </bean>  
   
     <bean id="wordtoimage" class="com.octo.captcha.component.image.wordtoimage.ComposedWordToImage">  
+        <description>图片生成器</description>
         <constructor-arg index="0">  
             <ref bean="fontGenRandom" />  
         </constructor-arg>  
@@ -49,6 +55,7 @@
     </bean>  
   
     <bean id="fontGenRandom" class="com.octo.captcha.component.image.fontgenerator.RandomFontGenerator">  
+    	<description>文字转换图片</description>
         <!--最小字体-->  
         <constructor-arg index="0">  
             <value>20</value>  
@@ -88,11 +95,11 @@
     <bean id="decoratedPaster" class="com.octo.captcha.component.image.textpaster.DecoratedRandomTextPaster">  
         <!--最大字符长度-->  
         <constructor-arg type="java.lang.Integer" index="0">  
-            <value>4</value>  
+            <value>6</value>  
         </constructor-arg>  
         <!--最小字符长度-->  
         <constructor-arg type="java.lang.Integer" index="1">  
-            <value>4</value>  
+            <value>6</value>  
         </constructor-arg>  
         <!--文本颜色-->  
         <constructor-arg index="2">  
